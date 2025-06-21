@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>宿主的灵力修炼日志</title>
+  <style>
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    @keyframes blinkStar {
+      0%, 100% {opacity: 1;}
+      50% {opacity: 0.3;}
+    }
+    body {
+      font-family: "STKaiti", "Serif";
+      background-image: url('https://images.unsplash.com/photo-1613929724897-007e9b1d00e3?auto=format&fit=crop&w=1470&q=80');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+      color: #2c2c2c;
+      padding: 20px;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 15px 25px;
+      border-radius: 18px;
+      max-width: 780px;
+      margin: 20px auto;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      position: relative;
+      overflow: visible;
+    }
+    h1, h2 {
+      text-align: center;
+      font-size: 26px;
+    }
+    .avatar {
+      width: 90px;
+      display: block;
+      margin: 10px auto;
+      border-radius: 50%;
+      animation: fadeIn 1.2s ease forwards;
+      position: relative;
+      z-index: 2;
+    }
+    /* 眨眼和星星特效容器 */
+    .avatar-container {
+      position: relative;
+      width: 90px;
+      margin: 10px auto 0 auto;
+      z-index: 2;
+    }
+    /* 星星闪烁 */
+    .star {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 20px;
+      height: 20px;
+      background: url('https://i.imgur.com/oT3aCrB.png') no-repeat center/contain;
+      animation: blinkStar 3s infinite;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 3;
+    }
+    /* 眨眼伪装：使用一个遮罩模拟眨眼，简单效果 */
+    .blink-eye {
+      position: absolute;
+      bottom: 18px;
+      left: 18px;
+      width: 55px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 50% / 100%;
+      transform-origin: center center;
+      animation: none;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 4;
+    }
+    label {
+      display: block;
+      margin-top: 8px;
+    }
+    input {
+      width: 60px;
+    }
+    .result, .realm, .next {
+      margin-top: 15px;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+    .bar {
+      margin: 10px auto;
+      width: 80%;
+      height: 20px;
+      background: #eee;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .bar-inner {
+      height: 100%;
+      background: linear-gradient(to right, #3b8070, #78d5c1);
+      width: 0%;
+      transition: width 0.5s;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      background: #3b8070;
+      color: white;
+      cursor: pointer;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .decor {
+      position: absolute;
+      bottom: -30px;
+      right: -20px;
+      width: 100px;
+      opacity: 0.8;
+      user-select: none;
+      pointer-events: none;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="avatar-container">
+      <img
+        src="https://0.soompi.io/wp-content/uploads/2025/04/14031536/kenshin.jpg"
+        alt="Kenshin的形象"
+        class="avatar"
+        id="avatar"
+      />
+      <div class="star" id="star"></div>
+      <div class="blink-eye" id="blinkEye"></div>
+    </div>
+    <div class="message" id="greeting">宿主加油！</div>
+    <h1>宿主的灵力修炼日志</h1>
+
+    <h2>🧠 英语学习类</h2>
+    <label>背10个单词：<input type="number" id="words" value="0" /></label>
+    <label>看完一本英文书：<input type="number" id="book" value="0" /></label>
+    <label>复习30分钟英文：<input type="number" id="review" value="0" /></label>
+    <label>英语口语练习：<input type="number" id="speaking" value="0" /></label>
+    <label>英语听写：<input type="number" id="dictation" value="0" /></label>
+    <label>阅读理解：<input type="number" id="reading" value="0" /></label>
+    <label>语法练习（10题）：<input type="number" id="grammar" value="0" /></label>
+    <label>词汇练习（10题）：<input type="number" id="vocab" value="0" /></label>
+    <label>看1集英文电视剧：<input type="number" id="drama" value="0" /></label>
+    <label>看1部英文电影：<input type="number" id="movie" value="0" /></label>
+
+    <h2>🔬 科学学习类</h2>
+    <label>复习30分钟科学：<input type="number" id="science" value="0" /></label>
+
+    <h2>🏃 身体锻炼类</h2>
+    <label>做完睡前运动：<input type="number" id="stretch" value="0" /></label>
+    <label>练核心：<input type="number" id="core" value="0" /></label>
+    <label>学完一首K-pop舞蹈：<input type="number" id="dance" value="0" /></label>
+
+    <button onclick="calculate()">✨ 计算今日灵力 ✨</button>
+
+    <div class="result" id="result">今日灵力：0</div>
+    <div class="result" id="total">累计灵力：0</div>
+    <div class="realm" id="realm">当前修为：炼体期</div>
+    <div class="next" id="next">距离下一个境界还需：0 灵力</div>
+    <div class="bar"><div class="bar-inner" id="progressBar"></div></div>
+    <img
+      src="https://i.imgur.com/yVkf2cq.png"
+      alt="仙鹤装饰"
+      class="decor"
+      aria-hidden="true"
+    />
+    <audio id="breakthroughSound" src="https://www.myinstants.com/media/sounds/power-up.mp3"></audio>
+  </div>
+
+  <script>
+    const realms = [
+      { name: "炼体期", min: 0, max: 299 },
+      { name: "炼气期", min: 300, max: 799 },
+      { name: "筑基期", min: 800, max: 1499 },
+      { name: "金丹期", min: 1500, max: 2499 },
+      { name: "元婴期", min: 2500, max: 3999 },
+      { name: "化神期", min: 4000, max: 5999 },
+      { name: "炼虚期", min: 6000, max: Infinity },
+    ];
+
+    const messages = [
+      "宿主加油！仙门就在前方！",
+      "今日努力一点，灵根更稳固。",
+      "冲鸭！炼气不止，成仙有望！",
+      "001猫猫一直在你身边修炼～",
+      "仙途虽远，步步生莲～",
+      "积少成多，百日筑基！",
+      "突破吧宿主，我感受到你的气息了！",
+    ];
+
+    let lastRealm = "";
+    let blinking = false;
+
+    function getRandomMessage() {
+      return messages[Math.floor(Math.random() * messages.length)];
+    }
+
+    function blinkAnimation() {
+      if (blinking) return;
+      blinking = true;
+      const blinkEye = document.getElementById("blinkEye");
+      const star = document.getElementById("star");
+      blinkEye.style.opacity = "1";
+      star.style.opacity = "1";
+
+      setTimeout(() => {
+        blinkEye.style.opacity = "0";
+        star.style.opacity = "0";
+        blinking = false;
+      }, 3000);
+    }
+
+    function calculate() {
+      const ids = {
+        words: 10,
+        book: 120,
+        review: 20,
+        speaking: 15,
+        dictation: 15,
+        reading: 30,
+        grammar: 15,
+        vocab: 25,
+        drama: 15,
+        movie: 50,
+        science: 10,
+        stretch: 5,
+        core: 8,
+        dance: 30,
+      };
+      let today = 0;
+      for (const [id, power] of Object.entries(ids)) {
+        const val = parseInt(document.getElementById(id).value) || 0;
+        today += val * power;
+      }
+      document.getElementById("result").innerText = "今日灵力：" + today;
+
+      let total = parseInt(localStorage.getItem("totalPower")) || 0;
+      total += today;
+      localStorage.setItem("totalPower", total);
+      document.getElementById("total").innerText = "累计灵力：" + total;
+
+      let current = realms.find((r) => total >= r.min && total <= r.max);
+      document.getElementById("realm").innerText = "当前修为：" + current.name;
+
+      let percent = ((total - current.min) / (current.max - current.min)) * 100;
+      document.getElementById("progressBar").style.width = percent + "%";
+
+      if (current.max !== Infinity) {
+        document.getElementById("next").innerText =
+          "距离下一个境界还需：" + (current.max - total + 1) + " 灵力";
+      } else {
+        document.getElementById("next").innerText = "你已登峰造极，炼虚飞升！";
+      }
+
+      if (lastRealm !== "" && lastRealm !== current.name) {
+        document.getElementById("breakthroughSound").play();
+        blinkAnimation();
+      }
+      lastRealm = current.name;
+
+      document.getElementById("greeting").innerText = getRandomMessage();
+    }
+
+    window.onload = () => {
+      document.getElementById("greeting").innerText = getRandomMessage();
+      calculate();
+    };
+  </script>
+</body>
+</html>
